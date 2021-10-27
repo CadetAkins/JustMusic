@@ -91,7 +91,6 @@ class Playlists(commands.Cog):
 
     description = await self.bot.wait_for('message', check = lambda message: message.channel == ctx.channel and message.author == ctx.author, timeout=60)
 
-    await msg.delete()
 
     while True:
       msg = await ctx.send("Please attach the icon you would like to use for this playlist below. Do not delete the message you send or the icon may not work in the future.")
@@ -104,7 +103,6 @@ class Playlists(commands.Cog):
       else:
         break
 
-    await msg.delete()
 
     while True:
       msg = await ctx.send("Please send the colour you would like to use for this playlist. Options are Red, Orange, Yellow, Green, Blue, Indigo, and Violet")
@@ -118,8 +116,6 @@ class Playlists(commands.Cog):
         colour = colours[colour.content.upper()]
         break
 
-    
-    await msg.delete()
 
     self.bot.db[name] = {}
     self.bot.db[name]['description'] = description.content
@@ -188,7 +184,6 @@ class Playlists(commands.Cog):
         else:
           break
 
-      await msg.delete()
 
       cname = name
       name = name.upper()
@@ -209,7 +204,6 @@ class Playlists(commands.Cog):
         else:
           break
 
-      await msg.delete()
 
       self.bot.db[playlist_name.upper()]['name'] = name.content
 
@@ -221,7 +215,6 @@ class Playlists(commands.Cog):
 
         break
 
-      await msg.delete()
 
       self.bot.db[playlist_name.upper()]['description'] = description.content
 
@@ -236,8 +229,6 @@ class Playlists(commands.Cog):
         else:
           break
 
-      await msg.delete()
-
       self.bot.db[playlist_name.upper()]['image'] = image.attachments[0].url
 
     elif attribute == "COLOUR" or attribute == "COLOR":
@@ -248,11 +239,8 @@ class Playlists(commands.Cog):
 
         if colour.content.upper() not in colours:
           await ctx.send("That is not a valid color choice.")
-        
         else:
           break
-
-      await msg.delete()
 
       self.bot.db[playlist_name.upper()]['colour'] = colours[colour.content.upper()]
 

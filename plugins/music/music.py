@@ -596,9 +596,12 @@ class Music(commands.Cog):
                 i += 1
           return
 
-        elif option == None:
-          option = "-N"
-          query = option
+        elif query == None:
+          if option.upper() == "-N":
+            await ctx.send("You must provide a query.")
+	
+	elif option.upper() != "-N":
+            query = option+query
 
         async with ctx.typing():
             try:
