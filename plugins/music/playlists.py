@@ -10,7 +10,6 @@ from youtube_dl import YoutubeDL
 YTDL_OPTIONS = {
   'format': 'bestaudio/best',
   'extractaudio': True,
-  'audioformat': 'mp3',
   'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
   'restrictfilenames': True,
   'noplaylist': True,
@@ -69,7 +68,7 @@ class InvalidAttributeError(Exception):
 class Playlists(commands.Cog):
   def __init__(self, bot: commands.Bot):
     self.bot=bot
-    self.name="Playlists"
+    self.name="Playlist category:"
 
   @commands.command(
     name="create-playlist",
