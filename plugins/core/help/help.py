@@ -30,9 +30,8 @@ class Help(commands.Cog):
         if len(cog.get_commands()) < 1:
           continue
         embed = discord.Embed(
+          title=cog.name,
           color=discord.Colour.dark_blue()
-        ).set_author(
-          name=cog.name
         ).set_footer(
           text="For more information on a specific command run {}help <command>".format(prefix)
         )
