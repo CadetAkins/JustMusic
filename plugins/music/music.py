@@ -109,7 +109,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
                 except IndexError:
                     raise YTDLError('Couldn\'t retrieve any matches for `{}`'.format(webpage_url))
 
-        return cls(ctx, discord.FFmpegOpusAudio(info['url'], **cls.FFMPEG_OPTIONS), data=info)
+        return cls(ctx, discord.FFmpegPCMAudio(info['url'], **cls.FFMPEG_OPTIONS), data=info)
 
     @staticmethod
     def parse_duration(duration: int):
@@ -237,7 +237,7 @@ class VoiceState:
                 await self.current.source.channel.send(embed=self.current.create_embed())
                 
             elif self.loop == True:
-                self.now = discord.FFmpegOpusAudio(self.current.source.stream_url, **YTDLSource.FFMPEG_OPTIONS)
+                self.now = discord.FFmpegPCMAudio(self.current.source.stream_url, **YTDLSource.FFMPEG_OPTIONS)
                 self.voice.play(self.now, after=self.play_next_song)
 
             await self.next.wait()
