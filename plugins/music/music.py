@@ -40,7 +40,7 @@ class YTDLSource:
 
     FFMPEG_OPTIONS = {
         'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
-        'options': '-vn', 'bitrate': '320k'
+        'options': '-vn', 'bitrate': 320
     }
 
     ytdl = youtube_dl.YoutubeDL(YTDL_OPTIONS)
