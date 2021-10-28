@@ -73,7 +73,7 @@ class Playlists(commands.Cog):
   @commands.command(
     name="create-playlist",
     aliases = [
-      'cp'
+      'mp'
     ],
     brief="Creates a playlist.",
     description="Creates a playlist with a given name.",
