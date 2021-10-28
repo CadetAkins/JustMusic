@@ -22,7 +22,7 @@ class YTDLError(Exception):
     pass
 
 
-class YTDLSource:
+class YTDLSource(discord.PCMVolumeTransformer):
     YTDL_OPTIONS = {
         'format': 'bestaudio/best',
         'extractaudio': True,
@@ -40,13 +40,14 @@ class YTDLSource:
 
     FFMPEG_OPTIONS = {
         'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
-        'options': '-vn', 'bitrate': 320
+        'options': '-vn'
     }
 
     ytdl = youtube_dl.YoutubeDL(YTDL_OPTIONS)
 
-    def __init__(self, ctx: commands.Context, source: discord.FFmpegOpusAudio, *, data: dict):
-
+    def __init__(self, ctx: commands.Context, source: discord.FFmpegPCMAudio, *, data: dict, float: 0.5):
+        suoer().__init__(source, volume)
+        
         self.requester = ctx.author
         self.channel = ctx.channel
         self.data = data
@@ -181,6 +182,8 @@ class VoiceState:
         self.voice = None
         self.next = asyncio.Event()
         self.songs = SongQueue()
+        
+        self._volume = 0.5
 
         self._loop = False
         self.skip_votes = set()
@@ -192,6 +195,14 @@ class VoiceState:
     def __del__(self):
         self.audio_player.cancel()
 
+    @property
+    def volume(self):
+        return self._volume
+    
+    @volume.setter
+    def volume(self, value):
+        self._volume = value
+        
     @property
     def loop(self):
         return self._loop
@@ -338,26 +349,26 @@ class Music(commands.Cog):
         await ctx.voice_state.stop()
         del self.voice_states[ctx.guild.id]
 
-#     @commands.command(
-#       name="volume",
-#       brief="Sets the bot's volume.",
-#       aliases = [
-#         'v'
-#       ],
-#       description="Sets the volume of the player.",
-#       usage="<volume>"
-#     )
-#     async def _volume(self, ctx: commands.Context, *, volume: int):
+    @commands.command(
+      name="volume",
+      brief="Sets the bot's volume.",
+      aliases = [
+        'v'
+      ],
+      description="Sets the volume of the player.",
+      usage="<volume>"
+    )
+    async def _volume(self, ctx: commands.Context, *, volume: int):
        
 
-#         if not ctx.voice_state.is_playing:
-#             return await ctx.send('Nothing being played at the moment.')
+        if not ctx.voice_state.is_playing:
+            return await ctx.send('Nothing being played at the moment.')
 
-#         if 0 > volume > 100:
-#             return await ctx.send('Volume must be between 0 and 100')
+        if 0 > volume > 100:
+            return await ctx.send('Volume must be between 0 and 100')
 
-#         ctx.voice_state.volume = volume / 100
-#         await ctx.send('Volume of the player set to {}%'.format(volume))
+        ctx.voice_state.volume = volume / 100
+        await ctx.send('Volume of the player set to {}%'.format(volume))
 
     @commands.command(
       name='now',
