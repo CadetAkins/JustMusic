@@ -22,7 +22,7 @@ class Help(commands.Cog):
     usage="<command: optional>"
   )
   async def _help(self, ctx, command=None):
-    prefix = ":"
+    prefix = "-"
     if command == None:
       embed_array = [] 
       for cog in self.bot.cogs:
