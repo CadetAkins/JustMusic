@@ -143,12 +143,11 @@ class Playlists(commands.Cog):
   async def _edit_playlist(self, ctx, attribute, *, playlist_name):
     attribute = attribute.upper()
 
-    if playlist_name.upper() not in self.bot.db:
-      raise InvalidNameError(playlist_name)
+    if bool(self.db_exec(f"SELECT EXISTS(SELECT 1 FROM playlists WHERE u_tag={name.upper()});")) == False:
+      raise InvalidNameError(name)
 
-    if str(ctx.author.id) != str(self.bot.db[playlist_name.upper()]['author']['id']):
-      return
-
+    playlists = db_exec("SELECT * FROM playlists;")
+    
     attrs = [
       "NAME",
       "CNAME",
