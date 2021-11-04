@@ -80,8 +80,8 @@ class Playlists(commands.Cog):
     usage="<playlist name>"
   )
   async def _create_playlist(self, ctx, *, name):
-    if name.upper() in self.bot.db:
-      raise PlaylistExistsError(name)
+    if bool(self.db_exec(f"SELECT EXISTS(SELECT 1 FROM playlists WHERE u_tag={name.upper()});")):
+      raise PLaylistExistsError(name)
 
     cname = name
     name = name.upper()
@@ -116,17 +116,7 @@ class Playlists(commands.Cog):
         break
 
 
-    self.bot.db[name] = {}
-    self.bot.db[name]['description'] = description.content
-    self.bot.db[name]['author'] = {}
-    self.bot.db[name]['author']['name'] = ctx.author.display_name
-    self.bot.db[name]['author']['id'] = ctx.author.id
-    self.bot.db[name]['author']['mention'] = ctx.author.mention
-    self.bot.db[name]['author']['avatar_url'] = str(ctx.author.avatar_url)
-    self.bot.db[name]['name'] = cname
-    self.bot.db[name]['image'] = image.attachments[0].url
-    self.bot.db[name]['colour'] = str(colour)
-    self.bot.db[name]['songs'] = {}
+    self.db_exec(f"INSERT INTO playlists VALUES ({name}, {cname}, {image.attachments[0].url}, {ctx.author.name}, {ctx.author.mention}, {ctx.author.id}, {ctx.author.avatar_url})")
 
     await ctx.send(
       embed = discord.Embed(
