@@ -46,9 +46,13 @@ class Help(commands.Cog):
       paginator = DiscordUtils.Pagination.AutoEmbedPaginator(ctx)
       await paginator.run(embed_array)
     else:
+      command = command.upper()
       commands = {}
       for command_obj in self.bot.commands:
         commands[command_obj.name] = command_obj
+        for alias in command_obj.aliases:
+          commands[alias] = command_obj
+          
       if command.lower() not in commands:
         raise InvalidCommandError(command)
       else:
